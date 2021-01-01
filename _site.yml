@@ -1,18 +1,10 @@
-url: http://www.danieldsjoberg.com/gtsummary/
-
-template:
-  params:
-    bootswatch: flatly
-
-authors:
-  Daniel D. Sjoberg:
-    href: "http://www.danieldsjoberg.com/"
-
+name: "Daniel D. Sjoberg"
+output_dir: "."
 navbar:
-  type: default
+  title: "Daniel D. Sjoberg"
   left:
-  - icon: fa-home
-    href: index.html
+    - icon: fa-home fa-lg
+      href: http://www.danieldsjoberg.com
   right:
   - icon: fa-github fa-lg
     href: https://github.com/ddsjoberg/
