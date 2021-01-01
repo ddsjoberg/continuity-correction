@@ -83,8 +83,7 @@ results <-
   group_by(n, p, delta, test) %>%
   summarise(power = mean(reject),
             simn = n(),
-            .groups = "drop") %>%
-  ungroup()
+            .groups = "drop") 
 ```
 
 ## Power of test
