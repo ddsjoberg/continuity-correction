@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build-readme:
+  run-simulation:
     # The type of runner that the job will run on
     runs-on: macOS-latest
 
@@ -20,7 +20,7 @@ jobs:
     - name: install required packages
       run: Rscript -e 'install.packages(c("gtsummary", "remotes", "rmarkdown"))'
 
-    # Render READEME.md using rmarkdown
+    # render Rmd 
     - name: run-simulation
       run: Rscript -e 'rmarkdown::render("test.Rmd", output_format = "md_document")'
 
