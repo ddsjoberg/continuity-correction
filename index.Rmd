@@ -4,7 +4,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Introduction
@@ -28,7 +28,7 @@ library(gtsummary)
 Set the number of simulated studies that will be run for each combination of rates and sample size.
 
 ```{r, warning=FALSE}
-simn <- 2
+simn <- 10000
 ```
 
 Simulate the trial results.
