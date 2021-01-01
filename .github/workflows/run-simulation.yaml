@@ -21,6 +21,7 @@ jobs:
     # render Rmd 
     - name: run-simulation
       run: Rscript -e 'rmarkdown::render("test.Rmd")'
+                   -e 'rmarkdown::render("index.Rmd")'
 
     - name: Commit files
       run: |
