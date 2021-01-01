@@ -1,7 +1,9 @@
 on:
+  schedule:
+    - cron: "0 11 * * *"
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-readme:
@@ -14,6 +16,10 @@ jobs:
     - uses: r-lib/actions/setup-r@v1
     - uses: r-lib/actions/setup-pandoc@v1
 
+    # install packages needed
+    - name: install required packages
+      run: Rscript -e 'install.packages(c("gtsummary", "remotes", "rmarkdown"))'
+
     # Render READEME.md using rmarkdown
     - name: run-simulation
       run: Rscript -e 'rmarkdown::render("test.Rmd", output_format = "md_document")'
@@ -23,5 +29,5 @@ jobs:
         git config --global user.email "ghau@example.com"
         git config --global user.name "GitHub Actions User"
         git add --all
-        git commit -am "gh-action simulation run"
+        git commit -am "chronjob"
         git push
