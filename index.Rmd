@@ -4,9 +4,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
-install.packages(c("tidyverse", "gtsummary"), repos = " http://cran.rstudio.com")
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ## Introduction
