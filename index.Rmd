@@ -88,6 +88,8 @@ results <-
 
 ## Power of test
 
+Across sample sizes and various prevelances of the binary variables, teh test without continuity correction exhibits higher power.
+
 ```{r}
 results %>%
   filter(p != 0.5) %>%
@@ -107,6 +109,9 @@ results %>%
 ```
 
 ## Level of test
+
+In the simulation study, we rejected the null hypothesis when the p-value was less than 0.05.
+The true rate of rejection should be 5%, and the test without continuity correction is closer to this threshold.
 
 ```{r}
 results %>%
