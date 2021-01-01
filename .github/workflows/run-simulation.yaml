@@ -16,7 +16,7 @@ jobs:
 
     # install packages needed
     - name: install required packages
-      run: Rscript -e 'install.packages(c("gtsummary", "remotes", "rmarkdown", "tidyverse"))'
+      run: Rscript -e 'install.packages(c("gtsummary", "remotes", "rmarkdown", "tidyverse"), repos = " http://cran.rstudio.com")'
 
     # render Rmd 
     - name: run-simulation
