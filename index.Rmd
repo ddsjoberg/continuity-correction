@@ -1,10 +1,11 @@
 ---
-title: "Untitled"
+title: "Yates' Continuity Correction"
+subtitle: "Assessment of Utility"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.width = 10)
 ```
 
 ## Introduction
@@ -88,9 +89,9 @@ results <-
 
 ## Power of test
 
-Across sample sizes and various prevelances of the binary variables, teh test without continuity correction exhibits higher power.
+Across sample sizes and various prevalence of the binary variables, the test without continuity correction exhibits higher power.
 
-```{r}
+```{r, fig.height = 7.5}
 results %>%
   filter(p != 0.5) %>%
   mutate(n = str_glue("N = {n}") %>% factor(levels = unique(.)), 
@@ -113,7 +114,7 @@ results %>%
 In the simulation study, we rejected the null hypothesis when the p-value was less than 0.05.
 The true rate of rejection should be 5%, and the test without continuity correction is closer to this threshold.
 
-```{r}
+```{r, fig.height = 5}
 results %>%
   filter(delta == 0) %>%
   mutate(n = str_glue("N = {n}") %>% factor(levels = unique(.))) %>%
