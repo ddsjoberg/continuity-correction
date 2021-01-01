@@ -1,0 +1,118 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+install.packages(c("tidyverse", "gtsummary"))
+```
+
+## Introduction
+
+The `tbl_summary() %>% add_p()` function from the gtsummary package is updating the default test for most continuous variables.
+Previously, continuous variables being compared between two groups would be compared with `chisq.test(correct = TRUE)`, which would use a continuity correction for 2 by 2 table comparisons.
+However, the simulation study below demonstrates the superior properties of `chisq.test(correct = FALSE)`, and we have updated the default to use this test instead.
+
+If a user wishes to continue using the continuity correction, there are two options.
+
+1. Change the no correction tests to use the correction: `trial %>% tbl_summary(by = trt) %>% add_p(all_tests("chisq.test.no.correct") ~ "chisq.test")`
+
+1. If you want to make the global change for the entire script or R session, use the  [gtsummary themes](http://www.danieldsjoberg.com/gtsummary/articles/themes.html). Run the following line anywhere in your R script: `set_gtsummary_theme(list("add_p.tbl_summary-attr:test.continuous_by2" = "chisq.test"))`
+
+## Simulating results
+
+```{r}
+library(tidyverse)
+library(gtsummary)
+
+simn <- 2
+
+sim_results <-
+  list(
+    simn = seq_len(simn),                              # number of simulations per scenario
+    n = c(20, 50, 100, 500),                           # sample sizes
+    p = c(0.05, 0.10, 0.20, 0.50),                     # rate of success in group 1
+    delta = c(0.0, 0.05, 0.10, 0.20, 0.30, 0.40, 0.45) # p + delta = rate of success in group 2
+  ) %>%
+  cross_df() %>%
+  # deleting duplicated scenarios (due to symmetry of test)
+  filter(p + delta <= 0.5) %>%
+  mutate(
+    # simulating  data set with specified success rates, and calculating p-values
+    df_result = pmap(
+      list(n, p, delta),
+      function(n, p, delta) {
+        data = 
+          bind_rows(
+            tibble(value = runif(n/2) < p, group = 1),
+            tibble(value = runif(n/2) < p + delta, group = 2),
+          )
+        
+        tribble(
+          ~test, ~reject, 
+          "With Correction", with(data, table(value, group)) %>% 
+            {tryCatch(chisq.test(., correct = TRUE), error = function(e) NA)$p.value} %>% 
+            {. < 0.05},
+          "Without Correction", with(data, table(value, group)) %>% 
+            {tryCatch(chisq.test(., correct = FALSE), error = function(e) NA)$p.value} %>% 
+            {. < 0.05}
+        )
+      }
+    )
+  ) %>%
+  unnest(df_result) %>% 
+  # deleting sets of results where at least one of the p-values are missing
+  group_by(simn, n, p, delta) %>% 
+  filter(sum(is.na(reject)) == 0) %>%
+  ungroup()
+
+# calculating power (or level) of test across simulations
+results <- 
+  sim_results %>%
+  group_by(n, p, delta, test) %>%
+  summarise(power = mean(reject),
+            simn = n()) %>%
+  ungroup()
+```
+
+## Power of test
+
+```{r}
+results %>%
+  filter(p != 0.5) %>%
+  mutate(n = str_glue("N = {n}") %>% factor(levels = unique(.)), 
+         p = str_glue("{p * 100}%") %>% factor(levels = unique(.))) %>%
+  ggplot(aes(x = delta, y = power, color = test)) +
+  geom_line() +
+  geom_point() +
+  geom_hline(yintercept = 0.05) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1)) +
+  facet_grid(n ~ p, scale = "free") +
+  labs(color = "",
+       y = "Power",
+       x = "Delta") +
+  theme(legend.position="bottom")
+```
+
+## Level of test
+
+```{r}
+results %>%
+  filter(delta == 0) %>%
+  mutate(n = str_glue("N = {n}") %>% factor(levels = unique(.))) %>%
+  ggplot(aes(x = p, y = power, color = test)) +
+  geom_line() +
+  geom_point() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1)) +
+  facet_wrap(~n) +
+  geom_hline(yintercept = 0.05) +
+  labs(color = "",
+       y = "Prob. of Rejecting H0",
+       x = "Event Rate") +
+  theme(legend.position="bottom")
+```
+
