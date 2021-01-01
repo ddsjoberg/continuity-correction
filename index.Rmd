@@ -28,7 +28,7 @@ library(gtsummary)
 Set the number of simulated studies that will be run for each combination of rates and sample size.
 
 ```{r, warning=FALSE}
-simn <- 10000
+simn <- 100
 ```
 
 Simulate the trial results.
