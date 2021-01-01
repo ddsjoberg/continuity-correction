@@ -1,6 +1,5 @@
 ---
 title: "Yates' Continuity Correction"
-subtitle: "Assessment of Utility"
 output: html_document
 ---
 
