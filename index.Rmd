@@ -23,10 +23,12 @@ If a user wishes to continue using the continuity correction, there are two opti
 
 ## Simulating results
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(gtsummary)
+```
 
+```{r, warning=FALSE}
 simn <- 2
 
 sim_results <-
@@ -73,7 +75,8 @@ results <-
   sim_results %>%
   group_by(n, p, delta, test) %>%
   summarise(power = mean(reject),
-            simn = n()) %>%
+            simn = n(),
+            .groups = "drop") %>%
   ungroup()
 ```
 
