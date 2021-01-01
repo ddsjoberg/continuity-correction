@@ -1,2 +1,3 @@
-# continuity-correction
-Comparing the Chi-squared tests with and without continuity correction
+Comparing performance the Chi-squared tests with and without continuity correction
+
+http://www.danieldsjoberg.com/continuity-correction/
