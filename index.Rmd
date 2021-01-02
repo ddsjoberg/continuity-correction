@@ -8,16 +8,15 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE, fig.width = 10)
 ```
 
-## Introduction
-
-The `tbl_summary() %>% add_p()` function from the gtsummary package is updating the default test for most continuous variables.
-Previously, continuous variables being compared between two groups would be compared with `chisq.test(correct = TRUE)`, which would use a continuity correction for 2 by 2 table comparisons.
+The {gtsummary} package function `tbl_summary() %>% add_p()` had its default statistical test slightly modified in version 1.3.6 for most continuous variables.
+Previously, 2-by-2 tables were compared with `chisq.test(correct = TRUE)`.
 However, the simulation study below demonstrates the superior properties of `chisq.test(correct = FALSE)`, and we have updated the default to use this test instead.
 
 ## Simulating results
 
 We will simulate many studies assuming various prevalence rates of two binary variables and at various sample sizes.
-The power and size of the chi-squared tests will be reported.
+Event rates between $0.05 \le p \le p +\delta \le 0.50$ were investigated, and sample sizes between 20 and 500.
+The power and size of the chi-squared tests were tabulated.
 
 Attach needed libraries.
 
