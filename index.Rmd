@@ -1,5 +1,6 @@
 ---
 title: "Yates' Continuity Correction"
+subtitle: "Assessment of Utility"
 output: html_document
 ---
 
@@ -20,20 +21,20 @@ The power and size of the chi-squared tests will be reported.
 
 Attach needed libraries.
 
-```{r, warning=FALSE, message=FALSE}
+```{r remedy01, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(gtsummary)
 ```
 
 Set the number of simulated studies that will be run for each combination of rates and sample size.
 
-```{r, warning=FALSE}
+```{r remedy02, warning=FALSE}
 simn <- 100
 ```
 
 Simulate the trial results.
 
-```{r, warning=FALSE}
+```{r remedy03, warning=FALSE}
 sim_results <-
   list(
     simn = seq_len(simn),                              # number of simulations per scenario
@@ -76,7 +77,7 @@ sim_results <-
 
 Summarize simulation results.
 
-```{r, warning=FALSE}
+```{r remedy04, warning=FALSE}
 # calculating power (or level) of test across simulations
 results <- 
   sim_results %>%
@@ -90,7 +91,7 @@ results <-
 
 Across sample sizes and various prevalence of the binary variables, the test without continuity correction exhibits higher power.
 
-```{r, fig.height = 7.5}
+```{r remedy05, fig.height = 7.5}
 results %>%
   filter(p != 0.5) %>%
   mutate(n = str_glue("N = {n}") %>% factor(levels = unique(.)), 
@@ -113,7 +114,7 @@ results %>%
 In the simulation study, we rejected the null hypothesis when the p-value was less than 0.05.
 The true rate of rejection should be 5%, and the test without continuity correction is closer to this threshold.
 
-```{r, fig.height = 5}
+```{r remedy06, fig.height = 5}
 results %>%
   filter(delta == 0) %>%
   mutate(n = str_glue("N = {n}") %>% factor(levels = unique(.))) %>%
