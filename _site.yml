@@ -4,8 +4,6 @@ output_dir: "."
 navbar:
   title: "Daniel D. Sjoberg"
   left:
-    - icon: fa-github fa-lg
-      href: https://github.com/ddsjoberg/continuity-correction
     - icon: fa-home fa-lg
       href: http://www.danieldsjoberg.com
       

@@ -29,7 +29,7 @@ library(gtsummary)
 Set the number of simulated studies that will be run for each combination of rates and sample size.
 
 ```{r remedy02, warning=FALSE}
-simn <- 100
+simn <- 10000
 ```
 
 Simulate the trial results.
@@ -138,3 +138,10 @@ If a user wishes to continue using the continuity correction, there are two opti
 1. Specify the variables you'd like to compare with the chi-squared test without continuity correction. For example, this line of code specifies all categorical variables are compared with `"chisq.test"` that uses the continuity correction: `trial %>% tbl_summary(by = trt) %>% add_p(all_categorical() ~ "chisq.test")`
 
 1. If you want to make the global change for the entire script or R session, use the  [gtsummary themes](http://www.danieldsjoberg.com/gtsummary/articles/themes.html). Run the following line anywhere in your R script, which will make the chi-sequared test with continuity correction the default: `set_gtsummary_theme(list("add_p.tbl_summary-attr:test.continuous_by2" = "chisq.test"))`
+
+```{r}
+current_time <- Sys.time()
+attributes(current_time)$tzone <- "America/New_York"  
+```
+
+`r current_time` EST
