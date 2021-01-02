@@ -88,8 +88,6 @@ results <-
 
 ## Power of test
 
-Across sample sizes and various prevalence of the binary variables, the test without continuity correction exhibits higher power.
-
 ```{r remedy05, fig.height = 7.5}
 results %>%
   filter(p != 0.5) %>%
@@ -108,10 +106,10 @@ results %>%
   theme(legend.position="bottom")
 ```
 
-## Level of test
+When n is large, both variants of the chi-squared test yield similar results.
+However, when n is 100 or less, the test without continuity correction exhibits higher power for the various prevalences of the binary variables.
 
-In the simulation study, we rejected the null hypothesis when the p-value was less than 0.05.
-The true rate of rejection should be 5%, and the test without continuity correction is closer to this threshold.
+## Level of test
 
 ```{r remedy06, fig.height = 5}
 results %>%
@@ -130,6 +128,10 @@ results %>%
   theme(legend.position="bottom")
 ```
 
+In the simulation study, we rejected the null hypothesis when the p-value was less than 0.05.
+The true rate of rejection should be 5% by definition.
+The test without continuity correction is closer to this threshold, thus preserving more accuratly the true level of the test.
+
 ## Restore Previous Behavior
 
 If a user wishes to continue using the continuity correction, there are two options.
@@ -138,7 +140,7 @@ If a user wishes to continue using the continuity correction, there are two opti
 
 1. If you want to make the global change for the entire script or R session, use the  [gtsummary themes](http://www.danieldsjoberg.com/gtsummary/articles/themes.html). Run the following line anywhere in your R script, which will make the chi-sequared test with continuity correction the default: `set_gtsummary_theme(list("add_p.tbl_summary-attr:test.continuous_by2" = "chisq.test"))`
 
-```{r}
+```{r, echo=FALSE}
 current_time <- Sys.time()
 attributes(current_time)$tzone <- "America/New_York"  
 ```
